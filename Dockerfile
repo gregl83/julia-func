@@ -75,14 +75,3 @@ RUN set -eux; \
 	julia --version
 
 CMD ["julia"]
-
-# add nodejs repository
-RUN set -eux curl -sL https://deb.nodesource.com/setup_10.x | bash -
-
-# install nodejs
-RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		nodejs \
-	; \
-	rm -rf /var/lib/apt/lists/*
