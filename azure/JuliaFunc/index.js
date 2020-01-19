@@ -5,14 +5,20 @@ module.exports = function (context, req) {
 
     console.log(`Executing julia script named ${script}`);
 
-    // todo - container script pathing
+    // todo - container script pathing (convenience)
+    // todo - script name should not allow relative paths (security)
 
-    const process = spawn(`julia ${script}`);
+    const subprocess = spawn('julia', [script]);
 
-    process.stdout.on('data', console.log);
-    process.stderr.on('data', console.error);
+    subprocess.stdout.on('data', data => {
+        console.log(`${data}`);
+    });
 
-    process.on('close', (code) => {
+    subprocess.stderr.on('data', data => {
+        console.error(`${data}`);
+    });
+
+    subprocess.on('close', (code) => {
         const body = `child process exited with code ${code}`;
         context.res = {body: body};
         context.done(body);
