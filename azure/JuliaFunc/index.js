@@ -13,7 +13,7 @@ module.exports = function (context, req) {
     process.stderr.on('data', console.error);
 
     process.on('close', (code) => {
-        let body = `child process exited with code ${code}`;
+        const body = `child process exited with code ${code}`;
         context.res = {body: body};
         context.done(body);
     });

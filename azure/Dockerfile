@@ -1,7 +1,13 @@
 FROM mcr.microsoft.com/azure-functions/node:2.0-appservice
 
-# add nodejs repository
-RUN set -eux curl -sL https://deb.nodesource.com/setup_10.x | bash -
+# Copy Azure HTTP Function
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot
+COPY . /home/site/wwwroot
+
+# Copy Julia Script
+COPY ../../script.jl /home/src/
+
+# --- BUILD JULIA --- Julia Latest
 
 RUN set -eux; \
 	apt-get update; \
@@ -9,7 +15,6 @@ RUN set -eux; \
 		ca-certificates \
 # ERROR: no download agent available; install curl, wget, or fetch
 		curl \
-		nodejs \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
